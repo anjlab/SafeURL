@@ -1,0 +1,25 @@
+{
+  "name": "SafeURL",
+  "version": "0.1.0",
+  "summary": "A short description of SafeURL.",
+  "description": "",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/SafeURL",
+  "license": "MIT",
+  "authors": {
+    "Yury Korolev": "yury.korolev@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/SafeURL.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "requires_arc": true,
+  "source_files": "Pod/Classes/**/*",
+  "resource_bundles": {
+    "SafeURL": [
+      "Pod/Assets/*.png"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+PODS:
+  - SafeURL (0.1.0)
+
+DEPENDENCIES:
+  - SafeURL (from `../`)
+
+EXTERNAL SOURCES:
+  SafeURL:
+    :path: ../
+
+SPEC CHECKSUMS:
+  SafeURL: 8c2e1f6e68f35f851bb3cfcfb21cee78dc99e0ba
+
+COCOAPODS: 0.39.0
