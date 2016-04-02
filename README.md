@@ -7,7 +7,12 @@
 
 ## Usage
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+```swift
+let baseURL = NSURL(string: "https://google.com")!
+
+baseURL.build(query: ["q": "SafeURL"]) // #>
+"https://google.com?q=SafeURL"
+```
 
 ## Requirements
 
