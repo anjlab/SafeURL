@@ -93,12 +93,12 @@ public extension NSURLComponents {
 public extension NSURL {
     @nonobjc
     static func build(baseURL: NSURL? = nil, components: NSURLComponents) -> NSURL? {
-        return components.URLRelativeToURL(baseURL)
+        return components.URLRelativeToURL(baseURL)?.absoluteURL
     }
     
     @nonobjc
     final func build(components: NSURLComponents) -> NSURL? {
-        return components.URLRelativeToURL(self)
+        return components.URLRelativeToURL(self)?.absoluteURL
     }
     
     
