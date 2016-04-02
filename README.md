@@ -1,6 +1,6 @@
 # SafeURL
 
-[![CI Status](http://img.shields.io/travis/Yury Korolev/SafeURL.svg?style=flat)](https://travis-ci.org/Yury Korolev/SafeURL)
+[![CI Status](http://img.shields.io/travis/anjlab/SafeURL.svg?style=flat)](https://travis-ci.org/anjlab/SafeURL)
 [![Version](https://img.shields.io/cocoapods/v/SafeURL.svg?style=flat)](http://cocoapods.org/pods/SafeURL)
 [![License](https://img.shields.io/cocoapods/l/SafeURL.svg?style=flat)](http://cocoapods.org/pods/SafeURL)
 [![Platform](https://img.shields.io/cocoapods/p/SafeURL.svg?style=flat)](http://cocoapods.org/pods/SafeURL)
