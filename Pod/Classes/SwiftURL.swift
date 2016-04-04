@@ -55,7 +55,7 @@ private func _paramsToQueryItems(params: [String: AnyObject]?) -> [NSURLQueryIte
     for (key, value) in params {
         result += _queryItems(key, value)
     }
-    return result
+    return result.sort({ $0.name < $1.name })
 }
 
 

@@ -93,7 +93,7 @@ class QueryEncodingTests: XCTestCase {
     
     func testStringWithAmpersandKeyStringWithAmpersandValue() {
         let url = baseURL.build(query: ["foo&bar": "baz&qux", "foobar": "bazqux"])
-        XCTAssertEqual(url!.query, "foobar=bazqux&foo%26bar=baz%26qux")
+        XCTAssertEqual(url!.query, "foo%26bar=baz%26qux&foobar=bazqux")
     }
     
     func testStringWithQuestionMarkKeyStringWithQuestionMarkValue() {
@@ -133,10 +133,10 @@ class QueryEncodingTests: XCTestCase {
         let url = baseURL.build(query: query)
         
         let expectedQueryValues = [
-            "japanese=%E6%97%A5%E6%9C%AC%E8%AA%9E",
             "arabic=%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9",
             "emoji=%F0%9F%98%83",
-            "french=fran%C3%A7ais"
+            "french=fran%C3%A7ais",
+            "japanese=%E6%97%A5%E6%9C%AC%E8%AA%9E"
         ]
         XCTAssertEqual(url!.query, expectedQueryValues.joinWithSeparator("&"))
     }
