@@ -1,11 +1,21 @@
 import Foundation
 
+// Creates URLPathSegmentAllowedCharacterSet same as URLPathAllowedCharacterSet - "/"
 private func _buildURLPathSegmentAllowedCharacterSet() -> NSCharacterSet {
-    let set = NSCharacterSet.URLPathAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
-    set.removeCharactersInString("/")
-    return set
+    let pathSegmentCharacterSet = NSCharacterSet.URLPathAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
+    pathSegmentCharacterSet.removeCharactersInString("/")
+    return pathSegmentCharacterSet
 }
 
+// Global var with URLPathSegmentAllowedCharacterSet to reduce
+private let _URLPathSegmentAllowedCharacterSet = _buildURLPathSegmentAllowedCharacterSet()
+
+private func _pathSegmentsToPath(segments: [AnyObject]?) -> String? {
+    guard let segments = segments else { return nil }
+    return segments.map { $0.description.stringByAddingPercentEncodingWithAllowedCharacters(_URLPathSegmentAllowedCharacterSet) ?? $0.description }.joinWithSeparator("/")
+}
+
+// Encode complex key/value objects in NSRULQueryItem pairs
 private func _queryItems(key: String, _ value: AnyObject?) -> [NSURLQueryItem] {
     var result = [] as [NSURLQueryItem]
    
@@ -27,6 +37,7 @@ private func _queryItems(key: String, _ value: AnyObject?) -> [NSURLQueryItem] {
     return result
 }
 
+// Encodes complex [String: AnyObject] params into array of NSURLQueryItem
 private func _paramsToQueryItems(params: [String: AnyObject]?) -> [NSURLQueryItem]? {
     guard let params = params else { return nil }
     
@@ -38,12 +49,6 @@ private func _paramsToQueryItems(params: [String: AnyObject]?) -> [NSURLQueryIte
     return result
 }
 
-private let _URLPathSegmentAllowedCharacterSet = _buildURLPathSegmentAllowedCharacterSet()
-
-private func _pathSegmentsToPath(segments: [AnyObject]?) -> String? {
-    guard let segments = segments else { return nil }
-    return segments.map { $0.description.stringByAddingPercentEncodingWithAllowedCharacters(_URLPathSegmentAllowedCharacterSet) ?? $0.description }.joinWithSeparator("/")
-}
 
 public extension NSURLComponents {
     
@@ -159,6 +164,5 @@ public extension NSURL {
         components.port = port
         return components.URL
     }
-
 }
 
