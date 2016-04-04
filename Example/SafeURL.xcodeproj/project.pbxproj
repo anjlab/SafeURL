@@ -11,7 +11,7 @@
 		B1281EE1454901A6EEF6703E /* Pods_SafeURL_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165325A46FE543CFB6BCB060 /* Pods_SafeURL_Tests.framework */; };
 		D21B98621CAFF1AF00F71285 /* StaticBuildTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21B98611CAFF1AF00F71285 /* StaticBuildTests.swift */; };
 		D21B98641CAFF6DD00F71285 /* InstanceBuildTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21B98631CAFF6DD00F71285 /* InstanceBuildTests.swift */; };
-		D257773F1CB2885A00F6BF36 /* EncodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D257773E1CB2885A00F6BF36 /* EncodingTests.swift */; };
+		D257773F1CB2885A00F6BF36 /* QueryEncodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D257773E1CB2885A00F6BF36 /* QueryEncodingTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +26,7 @@
 		BF6050C400E76E73F9F6BFDB /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D21B98611CAFF1AF00F71285 /* StaticBuildTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticBuildTests.swift; sourceTree = "<group>"; };
 		D21B98631CAFF6DD00F71285 /* InstanceBuildTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstanceBuildTests.swift; sourceTree = "<group>"; };
-		D257773E1CB2885A00F6BF36 /* EncodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncodingTests.swift; sourceTree = "<group>"; };
+		D257773E1CB2885A00F6BF36 /* QueryEncodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryEncodingTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +66,7 @@
 				607FACEB1AFB9204008FA782 /* GeneralBuildTests.swift */,
 				D21B98611CAFF1AF00F71285 /* StaticBuildTests.swift */,
 				D21B98631CAFF6DD00F71285 /* InstanceBuildTests.swift */,
-				D257773E1CB2885A00F6BF36 /* EncodingTests.swift */,
+				D257773E1CB2885A00F6BF36 /* QueryEncodingTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -227,7 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D257773F1CB2885A00F6BF36 /* EncodingTests.swift in Sources */,
+				D257773F1CB2885A00F6BF36 /* QueryEncodingTests.swift in Sources */,
 				D21B98621CAFF1AF00F71285 /* StaticBuildTests.swift in Sources */,
 				D21B98641CAFF6DD00F71285 /* InstanceBuildTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* GeneralBuildTests.swift in Sources */,

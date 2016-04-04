@@ -6,8 +6,6 @@
 //  Copyright © 2016 CocoaPods. All rights reserved.
 
 import Foundation
-import UIKit
-import Foundation
 import XCTest
 import SafeURL
 
