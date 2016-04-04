@@ -8,8 +8,14 @@
 ## Usage
 
 ```swift
-let baseURL = NSURL(string: "https://google.com")!
 
+// Construct urls from scratch 
+
+NSURL.build(scheme: "tel", path: "+7 (910) 670 14 00") // #> NSURL "tel:+7%20(910)%20670%2014%2000"
+
+// Use BaseURL
+
+let baseURL = NSURL(string: "https://google.com")!
 baseURL.build(query: ["q": "Safe URL"]) // #> NSURL "https://google.com?q=Safe%20URL"
 ```
 
