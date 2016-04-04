@@ -19,7 +19,8 @@ private func _pathSegmentsToPath(segments: [AnyObject]?) -> String? {
     
     return segments.map {
         $0.description
-            .stringByAddingPercentEncodingWithAllowedCharacters(_URLPathSegmentAllowedCharacterSet) ?? $0.description
+            .stringByAddingPercentEncodingWithAllowedCharacters(_URLPathSegmentAllowedCharacterSet)
+            ?? $0.description
         }.joinWithSeparator("/")
 }
 

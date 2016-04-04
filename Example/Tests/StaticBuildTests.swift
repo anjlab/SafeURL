@@ -43,8 +43,8 @@ class StaticBuildTests: XCTestCase {
         )
         
         XCTAssertEqual(
-            NSURL.build(baseURL, path: ["", "users", 1, "yury korolev"])?.absoluteString,
-            "https://some/users/1/yury%20korolev"
+            NSURL.build(baseURL, path: ["", "users", 1, "profile", "yury korolev"])?.absoluteString,
+            "https://some/users/1/profile/yury%20korolev"
         )
     }
     
