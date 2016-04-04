@@ -10,11 +10,12 @@
 ```swift
 let baseURL = NSURL(string: "https://google.com")!
 
-baseURL.build(query: ["q": "SafeURL"]) // #>
-"https://google.com?q=SafeURL"
+baseURL.build(query: ["q": "SafeURL"]) // #> NSURL "https://google.com?q=SafeURL"
 ```
 
 ## Requirements
+
+Xcode 7.3 Swift 2.2
 
 ## Installation
 
