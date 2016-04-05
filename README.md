@@ -19,6 +19,13 @@ let baseURL = NSURL(string: "https://google.com")!
 baseURL.build(query: ["q": "Safe URL"]) // #> NSURL "https://google.com?q=Safe%20URL"
 ```
 
+Build paths. No unsafe string interpolations 
+```swift
+let baseURL = NSURL(string: "https://example.com/api/v1/")!
+let userId = 1
+baseURL.build(["users", userId]) // #> NSURL "https://example.com/api/v1/users/1"
+```
+
 ## Requirements
 
 - iOS 8.0+ / Mac OS X 10.10+ / tvOS 9.0+ / watchOS 2.0+
