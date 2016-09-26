@@ -7,10 +7,23 @@
 
 ## Usage
 
+Construct urls from scratch 
+
+```swift
+NSURL.build(scheme: "tel", path: "+7 (910) 670 14 00") // #> NSURL "tel:+7%20(910)%20670%2014%2000"
+```
+
+Use BaseURL
 ```swift
 let baseURL = NSURL(string: "https://google.com")!
-
 baseURL.build(query: ["q": "Safe URL"]) // #> NSURL "https://google.com?q=Safe%20URL"
+```
+
+Build paths. No unsafe string interpolations 
+```swift
+let baseURL = NSURL(string: "https://example.com/api/v1/")!
+let userId = 1
+baseURL.build(["users", userId]) // #> NSURL "https://example.com/api/v1/users/1"
 ```
 
 ## Requirements
