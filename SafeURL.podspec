@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SafeURL"
-  s.version          = "3.4.0"
+  s.version          = "3.0.1"
   s.summary          = "Swift safe NSURL Builder"
 
   s.description      = <<-DESC
