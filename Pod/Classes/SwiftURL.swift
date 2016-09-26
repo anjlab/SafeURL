@@ -1,32 +1,31 @@
 import Foundation
 
 // Creates URLPathSegmentAllowedCharacterSet same as URLPathAllowedCharacterSet - "/"
-private func _createURLPathSegmentAllowedCharacterSet() -> NSCharacterSet {
-    let pathSegmentCharacterSet = NSCharacterSet
-        .URLPathAllowedCharacterSet()
+private func _createURLPathSegmentAllowedCharacterSet() -> CharacterSet {
+    let pathSegmentCharacterSet = (CharacterSet.urlPathAllowed as NSCharacterSet)
         .mutableCopy() as! NSMutableCharacterSet
     
-    pathSegmentCharacterSet.removeCharactersInString("/")
+    pathSegmentCharacterSet.removeCharacters(in: "/")
     
-    return pathSegmentCharacterSet
+    return pathSegmentCharacterSet as CharacterSet
 }
 
 // Global var with URLPathSegmentAllowedCharacterSet to reduce
 private let _URLPathSegmentAllowedCharacterSet = _createURLPathSegmentAllowedCharacterSet()
 
-private func _pathSegmentsToPath(segments: [AnyObject]?) -> String? {
+private func _pathSegmentsToPath(_ segments: [Any]?) -> String? {
     guard let segments = segments else { return nil }
     
     return segments.map {
-        $0.description
-            .stringByAddingPercentEncodingWithAllowedCharacters(_URLPathSegmentAllowedCharacterSet)
-            ?? $0.description
-        }.joinWithSeparator("/")
+        "\($0)"
+            .addingPercentEncoding(withAllowedCharacters: _URLPathSegmentAllowedCharacterSet)
+            ?? "\($0)"
+        }.joined(separator: "/")
 }
 
 // Encode complex key/value objects in NSRULQueryItem pairs
-private func _queryItems(key: String, _ value: AnyObject?) -> [NSURLQueryItem] {
-    var result = [] as [NSURLQueryItem]
+private func _queryItems(_ key: String, _ value: Any?) -> [URLQueryItem] {
+    var result = [] as [URLQueryItem]
    
     if let dictionary = value as? [String: AnyObject] {
         for (nestedKey, value) in dictionary {
@@ -38,33 +37,35 @@ private func _queryItems(key: String, _ value: AnyObject?) -> [NSURLQueryItem] {
             result += _queryItems(arrKey, value)
         }
     } else if let _ = value as? NSNull {
-        result.append(NSURLQueryItem(name: key, value: nil))
+        result.append(URLQueryItem(name: key, value: nil))
+    } else if let v = value {
+        result.append(URLQueryItem(name: key, value: "\(v)"))
     } else {
-        result.append(NSURLQueryItem(name: key, value: value?.description))
+        result.append(URLQueryItem(name: key, value: nil))
     }
     
     return result
 }
 
 // Encodes complex [String: AnyObject] params into array of NSURLQueryItem
-private func _paramsToQueryItems(params: [String: AnyObject]?) -> [NSURLQueryItem]? {
+private func _paramsToQueryItems(_ params: [String: Any]?) -> [URLQueryItem]? {
     guard let params = params else { return nil }
     
-    var result = [] as [NSURLQueryItem]
+    var result = [] as [URLQueryItem]
    
     for (key, value) in params {
         result += _queryItems(key, value)
     }
-    return result.sort({ $0.name < $1.name })
+    return result.sorted(by: { $0.name < $1.name })
 }
 
 
-public extension NSURLComponents {
+public extension URLComponents {
     
     // MARK: path as String
     
     @nonobjc
-    convenience init(path: String, query: String?, fragment: String? = nil) {
+    init(path: String, query: String?, fragment: String? = nil) {
         self.init()
         
         self.path     = path
@@ -73,7 +74,7 @@ public extension NSURLComponents {
     }
     
     @nonobjc
-    convenience init(path: String, queryItems: [NSURLQueryItem]?, fragment: String? = nil) {
+    init(path: String, queryItems: [URLQueryItem]?, fragment: String? = nil) {
         self.init()
         
         self.path       = path
@@ -82,7 +83,7 @@ public extension NSURLComponents {
     }
     
     @nonobjc
-    convenience init(path: String, query: [String: AnyObject]?, fragment: String? = nil) {
+    init(path: String, query: [String: Any]?, fragment: String? = nil) {
         self.init()
         
         self.path       = path
@@ -93,97 +94,101 @@ public extension NSURLComponents {
     // MARK: path as array of segments
     
     @nonobjc
-    convenience init(path segments: [AnyObject]?, query: String?, fragment: String? = nil) {
+    init(path segments: [Any]?, query: String?, fragment: String? = nil) {
         self.init()
         
-        self.percentEncodedPath = _pathSegmentsToPath(segments)
+        if let encodedPath = _pathSegmentsToPath(segments) {
+            self.percentEncodedPath = encodedPath
+        }
         self.query              = query
         self.fragment           = fragment
     }
    
     @nonobjc
-    convenience init(path segments: [AnyObject]?, query: [String: AnyObject]?, fragment: String? = nil) {
+    init(path segments: [Any]?, query: [String: Any]?, fragment: String? = nil) {
         self.init()
         
-        self.percentEncodedPath = _pathSegmentsToPath(segments)
+        if let encodedPath = _pathSegmentsToPath(segments) {
+            self.percentEncodedPath = encodedPath
+        }
         self.queryItems         = _paramsToQueryItems(query)
         self.fragment           = fragment
     }
 }
 
-public extension NSURL {
-    @nonobjc
-    static func build(baseURL: NSURL? = nil, components: NSURLComponents) -> NSURL? {
-        return components.URLRelativeToURL(baseURL)?.absoluteURL
-    }
+public extension URL {
     
-    @nonobjc
-    final func build(components: NSURLComponents) -> NSURL? {
-        return components.URLRelativeToURL(self)?.absoluteURL
+    static func build(_ baseURL: URL? = nil, components: URLComponents) -> URL? {
+        return components.url(relativeTo: baseURL)?.absoluteURL
     }
     
     
-    @nonobjc
-    static func build(baseURL: NSURL? = nil, path: String,  query: String, fragment: String? = nil) -> NSURL? {
-        return build(baseURL, components: NSURLComponents(path: path, query: query, fragment: fragment))
+    func build(_ components: URLComponents) -> URL? {
+        return components.url(relativeTo: self)?.absoluteURL
     }
     
-    @nonobjc
-    final func build(path: String, query: String, fragment: String? = nil) -> NSURL? {
-        return build(NSURLComponents(path: path, query: query, fragment: fragment))
+    
+    
+    static func build(_ baseURL: URL? = nil, path: String,  query: String, fragment: String? = nil) -> URL? {
+        return build(baseURL, components: URLComponents(path: path, query: query, fragment: fragment))
     }
     
-    @nonobjc
-    static func build(baseURL: NSURL? = nil, path: String,  query: [String: AnyObject]? = nil, fragment: String? = nil) -> NSURL? {
-        return build(baseURL, components: NSURLComponents(path: path, query: query, fragment: fragment))
+    
+    func build(_ path: String, query: String, fragment: String? = nil) -> URL? {
+        return build(URLComponents(path: path, query: query, fragment: fragment))
+    }
+    
+    
+    static func build(_ baseURL: URL? = nil, path: String,  query: [String: Any]? = nil, fragment: String? = nil) -> URL? {
+        return build(baseURL, components: URLComponents(path: path, query: query, fragment: fragment))
     }
 
-    @nonobjc
-    final func build(path: String, query: [String: AnyObject]? = nil, fragment: String? = nil) -> NSURL? {
-        return build(NSURLComponents(path: path, query: query, fragment: fragment))
+    
+    func build(_ path: String, query: [String: Any]? = nil, fragment: String? = nil) -> URL? {
+        return build(URLComponents(path: path, query: query, fragment: fragment))
     }
 
-    @nonobjc
-    static func build(baseURL: NSURL? = nil, path: [AnyObject]? = nil, query: String, fragment: String? = nil) -> NSURL? {
-        return build(baseURL, components: NSURLComponents(path: path, query: query, fragment: fragment))
+    
+    static func build(_ baseURL: URL? = nil, path: [Any]? = nil, query: String, fragment: String? = nil) -> URL? {
+        return build(baseURL, components: URLComponents(path: path, query: query, fragment: fragment))
     }
     
-    @nonobjc
-    final func build(path: [AnyObject]? = nil, query: String, fragment: String? = nil) -> NSURL? {
-        return build(NSURLComponents(path: path, query: query, fragment: fragment))
+    
+    func build(_ path: [Any]? = nil, query: String, fragment: String? = nil) -> URL? {
+        return build(URLComponents(path: path, query: query, fragment: fragment))
     }
     
-    @nonobjc
-    static func build(baseURL: NSURL? = nil, path: [AnyObject]? = nil,  query: [String: AnyObject]? = nil, fragment: String? = nil) -> NSURL? {
-        return build(baseURL, components: NSURLComponents(path: path, query: query, fragment: fragment))
+    
+    static func build(_ baseURL: URL? = nil, path: [Any]? = nil,  query: [String: Any]? = nil, fragment: String? = nil) -> URL? {
+        return build(baseURL, components: URLComponents(path: path, query: query, fragment: fragment))
     }
     
-    @nonobjc
-    final func build(path: [AnyObject]? = nil, query: [String: AnyObject]? = nil, fragment: String? = nil) -> NSURL? {
-        return build(NSURLComponents(path: path, query: query, fragment: fragment))
+    
+    func build(_ path: [Any]? = nil, query: [String: Any]? = nil, fragment: String? = nil) -> URL? {
+        return build(URLComponents(path: path, query: query, fragment: fragment))
     }
     
-    @nonobjc
-    static func build(scheme scheme: String?, host: String? = nil, port: UInt? = nil, path: String, query: [String: AnyObject]? = nil, fragment: String? = nil) -> NSURL? {
+    
+    static func build(scheme: String?, host: String? = nil, port: Int? = nil, path: String, query: [String: Any]? = nil, fragment: String? = nil) -> URL? {
         
-        let components = NSURLComponents(path: path, query: query, fragment: fragment)
+        var components = URLComponents(path: path, query: query, fragment: fragment)
         
         components.scheme = scheme
         components.host   = host
         components.port   = port
         
-        return components.URL
+        return components.url
     }
     
-    @nonobjc
-    static func build(scheme scheme: String?, host: String? = nil, port: UInt? = nil, path: [AnyObject]? = nil, query: [String: AnyObject]? = nil, fragment: String? = nil) -> NSURL? {
+    
+    static func build(scheme: String?, host: String? = nil, port: Int? = nil, path: [Any]? = nil, query: [String: Any]? = nil, fragment: String? = nil) -> URL? {
         
-        let components = NSURLComponents(path: path, query: query, fragment: fragment)
+        var components = URLComponents(path: path, query: query, fragment: fragment)
         
         components.scheme = scheme
         components.host   = host
         components.port   = port
         
-        return components.URL
+        return components.url
     }
 }

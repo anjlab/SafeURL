@@ -11,7 +11,7 @@ import SafeURL
 
 class InstanceBuildTests: XCTestCase {
     
-    let baseURL = NSURL(string: "https://some/api/v1/")!
+    let baseURL = URL(string: "https://some/api/v1/")!
     
     func testPath() {
         XCTAssertEqual(

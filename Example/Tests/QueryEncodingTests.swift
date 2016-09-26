@@ -12,7 +12,7 @@ import SafeURL
 
 class QueryEncodingTests: XCTestCase {
     
-    let baseURL = NSURL(string: "https://example.com/")!
+    let baseURL = URL(string: "https://example.com/")!
     
     func testNoArgs() {
         let url = baseURL.build()
@@ -58,7 +58,7 @@ class QueryEncodingTests: XCTestCase {
     
     func testStringKeyBoolValue() {
         let url = baseURL.build(query: ["foo": true])
-        XCTAssertEqual(url!.query, "foo=1")
+        XCTAssertEqual(url!.query, "foo=true")
     }
     
     func testStringKeyNullValue() {
@@ -138,13 +138,13 @@ class QueryEncodingTests: XCTestCase {
             "french=fran%C3%A7ais",
             "japanese=%E6%97%A5%E6%9C%AC%E8%AA%9E"
         ]
-        XCTAssertEqual(url!.query, expectedQueryValues.joinWithSeparator("&"))
+        XCTAssertEqual(url!.query, expectedQueryValues.joined(separator: "&"))
     }
     
     func testStringWithThousandsOfChineseCharacters() {
         // Given
         let repeatedCount = 2_000
-        let baseURL = NSURL(string: "https://example.com/movies")!
+        let baseURL = URL(string: "https://example.com/movies")!
         var input: String = ""
         for _ in 0..<repeatedCount {
             input += "一二三四五六七八九十"
